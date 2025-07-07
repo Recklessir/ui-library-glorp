@@ -4386,7 +4386,7 @@ function library:init()
         self.watermark = {
             objects = {};
             text = {
-                {"informant.wtf", true},
+                {"Pierce The Glorp Hub", true},
                 {"V"..getgenv().Config.Version, true},
                 {getgenv().luaguardvars.DiscordName, true},
                 {'0 fps', true},
@@ -4594,7 +4594,7 @@ function library:CreateSettingsTab(menu)
     end})
     
     mainSection:AddButton({text = 'Copy Discord', flag = 'copydiscord', callback = function()
-        setclipboard('https://discord.gg/'..getgenv().Config.Invite)
+        setclipboard('https://discord.gg/zu7smFzT'..getgenv().Config.Invite)
     end})
 
     mainSection:AddButton({text = 'Rejoin Server', confirm = true, callback = function()
