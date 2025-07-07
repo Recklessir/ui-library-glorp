@@ -63,6 +63,8 @@ local library = {
         ['gradientp45'] = 'https://raw.githubusercontent.com/portallol/luna/main/modules/gradient45.png';
         ['colorhue'] = 'https://raw.githubusercontent.com/portallol/luna/main/modules/lgbtqshit.png';
         ['colortrans'] = 'https://raw.githubusercontent.com/portallol/luna/main/modules/trans.png';
+        -- Add default alien theme image
+        ['alien_default'] = 'https://raw.githubusercontent.com/Recklessir/ui-library-glorp/refs/heads/main/bg_f8f8f8-flat_750x_075_f-pad_750x1000_f8f8f8-removebg-preview.png'; -- Replace with your default image
     };
     numberStrings = {['Zero'] = 0, ['One'] = 1, ['Two'] = 2, ['Three'] = 3, ['Four'] = 4, ['Five'] = 5, ['Six'] = 6, ['Seven'] = 7, ['Eight'] = 8, ['Nine'] = 9};
     signal = loadstring(game:HttpGet('https://raw.githubusercontent.com/drillygzzly/Other/main/1414'))();
@@ -77,6 +79,8 @@ local library = {
 library.themes = {
     {
         name = 'Alien',
+        -- Add image property to theme
+        image = startupArgs.alienImage or library.images['alien_default'], -- Customizable image
         theme = {
             ["Accent"]                    = fromrgb(80, 255, 120);     -- Glowing alien green
             ["Background"]                = fromrgb(5, 5, 10);         -- Deep space black
@@ -102,6 +106,28 @@ library.themes = {
         }
     },
 }
+
+-- Function to set custom image for Alien theme
+function library:SetAlienThemeImage(imageUrl)
+    for i, themeData in ipairs(self.themes) do
+        if themeData.name == 'Alien' then
+            themeData.image = imageUrl
+            -- Update the images table as well
+            self.images['alien_custom'] = imageUrl
+            break
+        end
+    end
+end
+
+-- Function to get current Alien theme image
+function library:GetAlienThemeImage()
+    for i, themeData in ipairs(self.themes) do
+        if themeData.name == 'Alien' then
+            return themeData.image
+        end
+    end
+    return nil
+end
 
 
 local blacklistedKeys = {
