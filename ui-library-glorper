@@ -129,6 +129,100 @@ function library:GetAlienThemeImage()
     return nil
 end
 
+-- Function to create background image
+function library:CreateBackgroundImage(imageUrl, transparency)
+    transparency = transparency or 0.8 -- Default transparency (0 = invisible, 1 = fully visible)
+    
+    -- Remove existing background if it exists
+    if self.backgroundImage then
+        self.backgroundImage:Remove()
+        self.backgroundImage = nil
+    end
+    
+    -- Create ScreenGui for background
+    local screenGui = newInstance("ScreenGui")
+    screenGui.Name = "AlienThemeBackground"
+    screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    screenGui.Parent = game.CoreGui
+    
+    -- Create background frame
+    local backgroundFrame = newInstance("Frame")
+    backgroundFrame.Name = "BackgroundFrame"
+    backgroundFrame.Size = UDim2.new(1, 0, 1, 0) -- Full screen
+    backgroundFrame.Position = UDim2.new(0, 0, 0, 0)
+    backgroundFrame.BackgroundTransparency = 1
+    backgroundFrame.ZIndex = self.zindexOrder['window'] - 100 -- Behind UI windows
+    backgroundFrame.Parent = screenGui
+    
+    -- Create ImageLabel for the background
+    local backgroundImage = newInstance("ImageLabel")
+    backgroundImage.Name = "AlienBackground"
+    backgroundImage.Size = UDim2.new(1, 0, 1, 0)
+    backgroundImage.Position = UDim2.new(0, 0, 0, 0)
+    backgroundImage.BackgroundTransparency = 1
+    backgroundImage.Image = imageUrl
+    backgroundImage.ImageTransparency = transparency
+    backgroundImage.ScaleType = Enum.ScaleType.Stretch -- You can change this to Crop, Fit, etc.
+    backgroundImage.ZIndex = 1
+    backgroundImage.Parent = backgroundFrame
+    
+    -- Store reference
+    self.backgroundImage = screenGui
+    self.instances[#self.instances + 1] = screenGui
+    
+    return backgroundImage
+end
+
+-- Function to update background image
+function library:UpdateBackgroundImage(imageUrl, transparency)
+    if self.backgroundImage then
+        local imageLabel = self.backgroundImage:FindFirstChild("BackgroundFrame"):FindFirstChild("AlienBackground")
+        if imageLabel then
+            imageLabel.Image = imageUrl
+            if transparency then
+                imageLabel.ImageTransparency = transparency
+            end
+        end
+    else
+        self:CreateBackgroundImage(imageUrl, transparency)
+    end
+end
+
+-- Function to remove background image
+function library:RemoveBackgroundImage()
+    if self.backgroundImage then
+        self.backgroundImage:Remove()
+        self.backgroundImage = nil
+    end
+end
+
+-- Function to set background transparency
+function library:SetBackgroundTransparency(transparency)
+    if self.backgroundImage then
+        local imageLabel = self.backgroundImage:FindFirstChild("BackgroundFrame"):FindFirstChild("AlienBackground")
+        if imageLabel then
+            imageLabel.ImageTransparency = transparency
+        end
+    end
+end
+
+-- Auto-apply background when Alien theme is selected
+function library:ApplyAlienTheme()
+    local alienTheme = nil
+    for i, themeData in ipairs(self.themes) do
+        if themeData.name == 'Alien' then
+            alienTheme = themeData
+            break
+        end
+    end
+    
+    if alienTheme and alienTheme.image then
+        -- Apply the theme colors (your existing theme application code would go here)
+        -- Apply the background image
+        self:CreateBackgroundImage(alienTheme.image, 0.3) -- 30% opacity so UI is still visible
+    end
+end
+
 
 local blacklistedKeys = {
     Enum.KeyCode.Unknown,
