@@ -1,7 +1,6 @@
 --[[
-Octohook ui lib informant version
-Developed by liam#4567
-Edited by xz#1111
+Developed by 
+Edited by 
 ]]
 
 -- // Load
@@ -4650,7 +4649,7 @@ function library:CreateSettingsTab(menu)
             end
         end
         setByPreset = false
-    end}):Select('Default');
+    end}):Select('Alien');
 
     return settingsTab;
 end
